@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <title>Control de gastos · Tus finanzas personales ordenadas</title>
+  <meta name="description" content="Anotá tus ingresos y gastos en segundos, controlá tus préstamos y cuotas y mirá cuánto ahorrás. Desde el celular, en guaraníes.">
+  <meta name="theme-color" content="#0f2a24">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%230b7a5a' d='M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5z'/%3E%3Ctext x='12' y='16.5' font-size='12' font-family='Arial' font-weight='bold' text-anchor='middle' fill='white'%3E$%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/ventas.css">
+</head>
+<body class="publica">
+  <header class="pub-top">
+    <div class="wrap">
+      <a class="brand" href="#inicio"><svg class="brand-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5z"/><text x="12" y="16.5" font-size="12" font-weight="800" text-anchor="middle" fill="#fff">$</text></svg><span class="js-app"></span></a>
+      <nav>
+        <a class="lnk hide-sm" href="#precio">Precio</a>
+        <a class="lnk hide-sm" href="#preguntas">Preguntas</a>
+        <a class="btn btn-outline" href="index.html">Ingresar</a>
+        <a class="btn btn-primary hide-sm" data-wa="alta" target="_blank" rel="noopener"><i data-lucide="message-circle"></i>Quiero mi cuenta</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <!-- HERO -->
+    <section class="hero-pub">
+      <div class="wrap">
+        <div>
+          <p class="eyebrow">Finanzas personales · en guaraníes</p>
+          <h1>Sabé <em>en qué se va</em> tu plata, mes a mes</h1>
+          <p class="lead">Anotá cada gasto en segundos desde el celular, controlá tus préstamos y cuotas sin olvidarte de ninguna, y mirá cuánto ahorrás. Todo en un solo lugar, simple y privado.</p>
+          <div class="ctas">
+            <a class="btn btn-primary" data-wa="prueba" target="_blank" rel="noopener"><i data-lucide="message-circle"></i>Probalo <span data-prueba>15</span> días gratis</a>
+            <a class="btn btn-outline" href="#funciones">Ver qué incluye</a>
+          </div>
+          <ul class="checks">
+            <li><i data-lucide="check"></i>Sin instalar nada</li>
+            <li><i data-lucide="check"></i>Celular y computadora</li>
+            <li><i data-lucide="check"></i>Solo vos ves tus datos</li>
+          </ul>
+        </div>
+
+        <div class="phone" aria-hidden="true">
+          <div class="hola">Hola, Laura<small>Tus movimientos de este mes</small></div>
+          <div class="ph-saldo">
+            <div class="k">Saldo del mes</div>
+            <div class="v">Gs. 3.450.000</div>
+            <div class="duo"><span>Ingresos<b class="mint">Gs. 8.000.000</b></span><span style="text-align:right">Gastos<b>Gs. 4.550.000</b></span></div>
+          </div>
+          <div class="ph-alert"><i data-lucide="triangle-alert"></i>Cuota 10 de Banco Familiar vence mañana</div>
+          <div class="ph-card">
+            <div class="t">Gastos por categoría</div>
+            <div class="ph-bar"><div><span>Comida</span><b>1.450.000</b></div><i style="width:100%;background:#D9480F"></i></div>
+            <div class="ph-bar"><div><span>Hogar</span><b>1.200.000</b></div><i style="width:83%;background:#7048E8"></i></div>
+            <div class="ph-bar"><div><span>Transporte</span><b>980.000</b></div><i style="width:68%;background:#1C7ED6"></i></div>
+          </div>
+          <div class="ph-card">
+            <div class="ph-row"><span class="ic" style="background:rgba(217,72,15,.15);color:#D9480F"><i data-lucide="arrow-down"></i></span><span>Almuerzo<small>Comida · Hoy</small></span><b>-25.000</b></div>
+            <div class="ph-row"><span class="ic" style="background:rgba(11,122,90,.15);color:#0B7A5A"><i data-lucide="arrow-up"></i></span><span>Sueldo<small>Salario · 1 nov</small></span><b style="color:var(--green)">+8.000.000</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FUNCIONES -->
+    <section class="sec" id="funciones">
+      <div class="wrap">
+        <h2>Todo lo que necesitás para ordenar tus finanzas</h2>
+        <p class="sub">Pensado para el día a día en Paraguay: montos en guaraníes, préstamos en cuotas y ahorro en la cooperativa.</p>
+        <div class="feat">
+          <article><div class="ic"><i data-lucide="zap"></i></div><h3>Anotá en segundos</h3><p>Monto, categoría y listo. Lo que más repetís (el café, la nafta, el almuerzo) aparece para cargarlo con un toque.</p></article>
+          <article><div class="ic"><i data-lucide="chart-pie"></i></div><h3>En qué se va tu plata</h3><p>Saldo del mes, cuánto de tus ingresos ya gastaste y el total por categoría, con colores.</p></article>
+          <article><div class="ic"><i data-lucide="chart-column"></i></div><h3>Mes contra mes</h3><p>Un gráfico de ingresos y gastos de los últimos 6 meses para ver si vas mejorando.</p></article>
+          <article><div class="ic"><i data-lucide="banknote"></i></div><h3>Préstamos y cuotas</h3><p>Cargás el préstamo una vez y se arman todas las cuotas. Ves cuánto debés, qué vence y cuáles están atrasadas.</p></article>
+          <article><div class="ic"><i data-lucide="piggy-bank"></i></div><h3>Ahorros</h3><p>Depósitos y retiros en el banco, la cooperativa o la alcancía. Cuánto juntaste en total y dónde está.</p></article>
+          <article><div class="ic"><i data-lucide="tags"></i></div><h3>Tus categorías</h3><p>Usá las que vienen o creá las tuyas, con el color que quieras: «Gastos de los chicos», «Auto», «Salidas»…</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRÉSTAMOS -->
+    <section class="sec alt">
+      <div class="wrap split">
+        <div>
+          <h2>Nunca más una cuota olvidada</h2>
+          <p class="sub" style="margin-bottom:24px">Si tenés varios préstamos (el banco, la financiera, la cooperativa, el celular en cuotas), los ves todos juntos.</p>
+          <ul>
+            <li><i data-lucide="circle-check"></i><span>Cuánto debés en total y cuánto pagás por mes entre todos tus préstamos.</span></li>
+            <li><i data-lucide="circle-check"></i><span>Las cuotas vencidas, con los días de mora, en rojo.</span></li>
+            <li><i data-lucide="circle-check"></i><span>Marcás la cuota como pagada y se anota sola como gasto del mes.</span></li>
+            <li><i data-lucide="circle-check"></i><span>El avance de cada préstamo: «9 de 36 cuotas pagadas».</span></li>
+          </ul>
+        </div>
+        <div class="mini-cuotas" aria-hidden="true">
+          <div class="ph-saldo"><div class="k">Deuda pendiente</div><div class="v" style="color:var(--salmon)">Gs. 54.026.811</div>
+            <div class="bar" style="margin-top:10px;height:8px"><span style="width:25%"></span></div><div class="k" style="margin-top:6px">9 de 36 cuotas pagadas · 25%</div></div>
+          <div class="ph-row"><span class="ic" style="background:var(--red-soft);color:var(--red)"><i data-lucide="triangle-alert"></i></span><span>Cuota 10<small style="color:var(--red)">Vencida · 3 días de mora</small></span><b style="color:var(--red)">2.000.993</b></div>
+          <div class="ph-row"><span class="ic" style="background:#eceff3;color:#4b5563"><i data-lucide="calendar"></i></span><span>Cuota 11<small>Vence 25/12</small></span><b>2.000.993</b></div>
+          <div class="ph-row"><span class="ic" style="background:#eceff3;color:#4b5563"><i data-lucide="calendar"></i></span><span>Cuota 12<small>Vence 25/01</small></span><b>2.000.993</b></div>
+          <span class="btn btn-primary btn-sm" style="pointer-events:none"><i data-lucide="check"></i>Marcar como pagada</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CÓMO EMPEZAR -->
+    <section class="sec">
+      <div class="wrap">
+        <h2>Empezás hoy mismo</h2>
+        <p class="sub">Sin formularios largos ni tarjetas de crédito.</p>
+        <ol class="pasos">
+          <li><div class="n">1</div><h3>Escribinos</h3><p>Por WhatsApp, con tu nombre y tu email. Te contamos cómo funciona y resolvemos tus dudas.</p></li>
+          <li><div class="n">2</div><h3>Recibí tu acceso</h3><p>Te mandamos el link y una contraseña temporal. Al entrar elegís la tuya.</p></li>
+          <li><div class="n">3</div><h3>Anotá tu primer gasto</h3><p>Ya vienen las categorías más comunes. Agregá tus préstamos y empezá a ver tu mes.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- PRECIO -->
+    <section class="sec alt center" id="precio">
+      <div class="wrap">
+        <h2>Un precio simple</h2>
+        <p class="sub">Menos de lo que gastás en un café por semana.</p>
+        <div class="precio">
+          <span class="prueba"><span data-prueba>15</span> días gratis para probar</span>
+          <p class="monto"><span data-precio>Gs. 25.000</span><small>por mes</small></p>
+          <ul class="checks col" style="text-align:left">
+            <li><i data-lucide="check"></i>Movimientos, préstamos y ahorros sin límite</li>
+            <li><i data-lucide="check"></i>Desde el celular y la computadora</li>
+            <li><i data-lucide="check"></i>Tus datos privados y con respaldo</li>
+            <li><i data-lucide="check"></i>Soporte por WhatsApp</li>
+            <li><i data-lucide="check"></i>Sin contrato: pagás mes a mes</li>
+          </ul>
+          <a class="btn btn-primary btn-block" data-wa="alta" target="_blank" rel="noopener"><i data-lucide="message-circle"></i>Quiero mi cuenta</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREGUNTAS -->
+    <section class="sec" id="preguntas">
+      <div class="wrap">
+        <h2 class="center">Preguntas frecuentes</h2>
+        <p class="sub center">Y si te queda alguna, escribinos.</p>
+        <div class="faq">
+          <details><summary>¿Tengo que instalar algo?</summary><p>No. Funciona en el navegador del celular o la computadora. Si querés, en el celular podés agregarlo a la pantalla de inicio para abrirlo como una app.</p></details>
+          <details><summary>¿Se conecta con mi banco?</summary><p>No. Vos anotás tus movimientos, el sistema no accede a tus cuentas ni mueve dinero. Así no tenés que darle tus claves del banco a nadie.</p></details>
+          <details><summary>¿Quién puede ver mis datos?</summary><p>Solo vos. Cada cuenta está separada y tus movimientos no los ve nadie más. Lo explicamos en detalle en la <a href="privacidad.html" style="color:var(--green);font-weight:600">Política de privacidad</a>.</p></details>
+          <details><summary>¿Qué pasa si dejo de pagar?</summary><p>Tenés 5 días de gracia. Después la cuenta queda en solo lectura: seguís viendo todos tus datos, pero no podés cargar nuevos hasta renovar. No se borra nada.</p></details>
+          <details><summary>¿Cómo pago el abono?</summary><p>Por transferencia o como te quede más cómodo; lo coordinamos por WhatsApp. Podés pagar mes a mes o varios meses juntos.</p></details>
+          <details><summary>¿Puedo darme de baja cuando quiera?</summary><p>Sí, no hay contrato. Si querés, antes te pasamos una copia de tus datos.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CIERRE -->
+    <section class="final">
+      <div class="wrap">
+        <h2>Ordená tu plata desde hoy</h2>
+        <p>Escribinos y en unos minutos tenés tu cuenta lista, con <span data-prueba>15</span> días gratis para probarla.</p>
+        <a class="btn" data-wa="prueba" target="_blank" rel="noopener"><i data-lucide="message-circle"></i>Escribinos por WhatsApp</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pub-foot">
+    <div class="wrap">
+      <span>© <span data-anio></span> <span class="js-app"></span></span>
+      <a href="terminos.html">Términos y condiciones</a>
+      <a href="privacidad.html">Política de privacidad</a>
+      <a href="index.html">Ingresar</a>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/ventas.js"></script>
+</body>
+</html>
