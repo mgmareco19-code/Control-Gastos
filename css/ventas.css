@@ -114,7 +114,8 @@ body.publica { background: #fff; }
 
 /* ---------- Textos legales ---------- */
 .legal { max-width: 760px; margin: 0 auto; padding: 40px 20px 64px; color: var(--ink2); line-height: 1.65; font-size: 16px; }
-.legal h1 { color: var(--ink); font-size: 34px; letter-spacing: -.8px; margin: 0 0 6px; }
+.legal h1 { color: var(--ink); font-size: 34px; letter-spacing: -.8px; margin: 0 0 6px; line-height: 1.15; }
+@media (max-width: 640px) { .legal h1 { font-size: 28px; } .legal { padding-top: 28px; } }
 .legal .fecha { color: var(--muted); margin: 0 0 28px; font-size: 14.5px; }
 .legal h2 { color: var(--ink); font-size: 20px; margin: 32px 0 8px; }
 .legal ul { padding-left: 22px; }

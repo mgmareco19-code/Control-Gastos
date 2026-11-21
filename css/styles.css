@@ -82,10 +82,10 @@ body.sin-menu .sidebar { display: none; }
 @media (max-width: 899px) {
   .sidebar {
     position: fixed; z-index: 50; top: 0; left: 0; height: 100vh; width: min(290px, 84vw);
-    transform: translateX(-100%); transition: transform .22s ease; box-shadow: 0 0 40px rgba(0,0,0,.15);
+    transform: translateX(-100%); transition: transform .22s ease, visibility .22s; visibility: hidden;
     padding-top: 20px;
   }
-  body.menu-abierto .sidebar { transform: none; }
+  body.menu-abierto .sidebar { transform: none; visibility: visible; box-shadow: 0 0 40px rgba(0,0,0,.15); }
   body.menu-abierto .scrim { display: block; position: fixed; inset: 0; z-index: 40; background: rgba(15, 23, 42, .35); }
   body.sin-menu .sidebar { display: flex; }
   .main { padding: 20px 16px 110px; }
@@ -203,6 +203,7 @@ button.row:hover .row-title { text-decoration: underline; }
 .row-chev { color: #9ca3af; }
 .row-end { display: flex; align-items: center; gap: 10px; }
 .mini { font-size: 13px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+.mini.txt { white-space: normal; line-height: 1.45; }
 .compact .row-ico { width: 38px; height: 38px; border-radius: 11px; }
 .compact .row-ico .dot { width: 11px; height: 11px; }
 .compact .row-title { font-size: 15px; }
@@ -395,3 +396,25 @@ body.sin-sesion .auth { display: flex; min-height: 100vh; align-items: center; j
 .per-fechas .field input { font-size: 16px; }
 .sel-fecha { height: 38px; padding-right: 10px; cursor: pointer; max-width: 100%; }
 @media (max-width: 899px) { .filtro-per > .seg { min-width: 0; width: 100%; } .per-fechas { width: 100%; } .per-fechas .field { flex: 1; min-width: 0; } }
+
+/* ---------- Celular: listas más aprovechadas ---------- */
+.prest-mob { padding: 12px 0 14px; }
+.prest-mob + .prest-mob { border-top: 1px solid #f1f3f5; }
+.pm-pie { display: flex; align-items: center; gap: 14px; width: 100%; background: none; border: 0; padding: 10px 0 0; text-align: left; }
+.pm-pie .track { flex: 1; height: 8px; }
+.pm-pie .row-amount { font-size: 16px; }
+@media (max-width: 899px) {
+  .list { padding: 4px 16px; }
+  .row { gap: 12px; }
+  .row-ico { width: 44px; height: 44px; border-radius: 13px; }
+  .row-ico svg { width: 18px; height: 18px; }
+  .row-title { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
+  .row-amount { font-size: 16px; }
+}
+@media (max-width: 899px) { .hero-split .v { font-size: 17px; white-space: nowrap; } }
+@media (max-width: 899px) {
+  body.super .brand { white-space: nowrap; font-size: 17px; }
+  body.super .search input::placeholder { font-size: 15px; }
+  body.super .chips .chip { height: 36px !important; padding: 0 14px; font-size: 14.5px; }
+}
+@media (max-width: 420px) { .hide-xs { display: none; } }

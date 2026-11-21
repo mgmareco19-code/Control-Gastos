@@ -159,7 +159,7 @@
     const anioPer = state.per.modo === "mes" ? state.per.mes.slice(0, 4) : null;
     const cobradoAnio = anioPer ? state.pagos.filter((p) => p.fecha.slice(0, 4) === anioPer).reduce((s, p) => s + p.monto, 0) : 0;
     const p = state.per;
-    const MODOS = [["mes", "Mes"], ["rango", "Entre fechas"], ["todo", "Todo"]];
+    const MODOS = [["mes", "Mes"], ["rango", "Fechas"], ["todo", "Todo"]];
 
     app.innerHTML = `
       <div class="page-head">
@@ -214,7 +214,7 @@
   function pintarCuentas() {
     const FILTROS = [["todas", "Todas"], ["atencion", "Por vencer y vencidas"], ["suspendida", "Suspendidas"]];
     $("#tabBody").innerHTML = `
-      <label class="search"><i data-lucide="search"></i><input id="buscar" type="search" placeholder="Buscar por nombre, email o WhatsApp" value="${esc(state.buscar)}" autocomplete="off"></label>
+      <label class="search"><i data-lucide="search"></i><input id="buscar" type="search" placeholder="Buscar cliente, email o WhatsApp" value="${esc(state.buscar)}" autocomplete="off"></label>
       <div class="chips" id="filtros" style="margin-bottom:14px;align-items:center">${FILTROS.map(([k, v]) => `<button class="chip ${state.filtro === k ? "on" : ""}" data-f="${k}" style="height:38px">${v}</button>`).join("")}
         <select class="chip sel-fecha ${state.fechaCuenta ? "on" : ""}" id="fechaCuenta" aria-label="Filtrar por fecha">${FECHAS_CUENTA.map(([k, v]) => `<option value="${k}" ${state.fechaCuenta === k ? "selected" : ""}>${k ? `${v.replace("el período", esc(nombrePeriodo()))}` : v}</option>`).join("")}</select></div>
       <div id="lista"></div>`;
@@ -249,7 +249,7 @@
         <div class="list only-mob">${f.map((c) => `
           <div class="row" data-id="${c.id}" style="cursor:pointer">
             <span class="row-ico" style="background:var(--green-soft);color:var(--green);font-weight:800">${esc(c.nombre.charAt(0).toUpperCase())}</span>
-            <span class="row-body"><span class="row-title">${esc(c.nombre)}</span><span class="row-sub">${c.vence_el ? `Vence ${U.fecha(c.vence_el)}` : "Sin vencimiento"} · ${U.gs(c.precio)}</span></span>
+            <span class="row-body"><span class="row-title">${esc(c.nombre)}</span><span class="row-sub">${c.vence_el ? `Vence ${U.fecha(c.vence_el)}` : "Sin vencimiento"}</span></span>
             <span class="row-end"><span class="pill ${PILL[est(c).estado]}">${U.ESTADOS[est(c).estado]}</span></span>
           </div>`).join("")}</div>`;
       icons();
@@ -270,7 +270,16 @@
     const ps = state.pagos.filter((p) => enRango(p.fecha)).sort((a, b) => (a.fecha < b.fecha ? 1 : a.fecha > b.fecha ? -1 : b.id - a.id));
     $("#tabBody").innerHTML = !state.pagos.length ? `<div class="empty"><h3>Todavía no hay cobros</h3><p>Cuando registres un pago con «Cobrar», aparece acá.</p></div>`
       : !ps.length ? `<div class="empty"><h3>Sin cobros en ${esc(nombrePeriodo())}</h3><p>Probá con otro mes u otras fechas.</p></div>` : `
-      <div class="table-wrap" style="margin-top:0"><table class="tabla">
+      <div class="list only-mob">${ps.map((p) => `
+        <div class="row">
+          <span class="row-ico" style="background:var(--green-soft);color:var(--green)"><i data-lucide="banknote"></i></span>
+          <span class="row-body"><span class="row-title">${esc(p.cliente)}</span><span class="row-sub">${U.fecha(p.fecha)} · ${p.meses} ${p.meses === 1 ? "mes" : "meses"}</span></span>
+          <span class="row-amount pos">${U.num(p.monto)}</span>
+          <button class="icon-btn plain" data-borrar="${p.id}" aria-label="Borrar pago"><i data-lucide="trash-2"></i></button>
+        </div>`).join("")}
+        <div class="mini" style="padding:12px 0;text-align:right;border-top:1px solid #f1f3f5">${U.plural(ps.length, "cobro", "cobros")} · ${U.gs(ps.reduce((s, p) => s + p.monto, 0))}</div>
+      </div>
+      <div class="table-wrap only-desk" style="margin-top:0"><table class="tabla">
         <thead><tr><th>Fecha</th><th>Cliente</th><th class="r">Meses</th><th>Período</th><th class="r">Monto</th><th></th></tr></thead>
         <tbody>${ps.map((p) => `<tr style="cursor:default"><td>${U.fecha(p.fecha)}</td><td class="strong">${esc(p.cliente)}</td><td class="r">${p.meses}</td>
           <td>${U.fecha(p.desde)} → ${U.fecha(p.hasta)}</td><td class="r strong" style="color:var(--green)">${U.num(p.monto)}</td>
@@ -304,7 +313,7 @@
     const m = modal({
       titulo: "Nueva cuenta",
       cuerpo: `${camposCuenta({ vence_el: U.addDays(U.hoy(), cfg.diasPrueba) })}
-        <p class="mini" style="margin:0;font-weight:500">Se proponen ${cfg.diasPrueba} días de prueba. Al guardar se genera una contraseña temporal para mandarle.</p>
+        <p class="mini txt" style="margin:0;font-weight:500">Se proponen ${cfg.diasPrueba} días de prueba. Al guardar se genera una contraseña temporal para mandarle.</p>
         <div class="err" id="cErr"></div>`,
       pie: `<button class="btn btn-outline" data-cerrar>Salir</button><button class="btn btn-primary" id="cOk">Crear cuenta</button>`,
     });

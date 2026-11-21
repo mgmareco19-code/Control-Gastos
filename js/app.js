@@ -231,7 +231,7 @@
       app.innerHTML = `
         <div class="page-head">
           <div><a class="crumb" href="#/inicio">Inicio</a><h1 class="page-title">Movimientos del período</h1></div>
-          <div class="head-actions"><button class="btn btn-primary" data-act="nuevo-mov" data-tipo="gasto"><i data-lucide="plus"></i>Incluir</button></div>
+          <div class="head-actions"><button class="btn btn-primary only-desk" data-act="nuevo-mov" data-tipo="gasto"><i data-lucide="plus"></i>Incluir</button></div>
         </div>
         <div class="page-head" style="align-items:center">${periodoHtml()}</div>
         <section class="hero">
@@ -242,7 +242,7 @@
           </div>
         </section>
         <div class="section-head"><h2>Movimientos</h2><span class="mini">${U.plural(todos.length, "movimiento", "movimientos")}</span></div>
-        ${todos.length ? `<label class="search"><i data-lucide="search"></i><input id="buscarMov" type="search" placeholder="Buscar por descripción o categoría" value="${esc(state.buscar)}" autocomplete="off"></label><div id="listaMov"></div>`
+        ${todos.length ? `<label class="search"><i data-lucide="search"></i><input id="buscarMov" type="search" placeholder="Buscar descripción o categoría" value="${esc(state.buscar)}" autocomplete="off"></label><div id="listaMov"></div>`
           : vacio("Aún no hay movimientos", "No encontramos registros para este período. Cuando cargues un ingreso o un gasto, aparecerá aquí.", "Incluir movimiento", "nuevo-mov", 'data-tipo="gasto"')}`;
       if (!todos.length) return;
       const pintar = () => {
@@ -341,16 +341,17 @@
           <tfoot><tr><td colspan="9">${U.plural(lista.length, "préstamo", "préstamos")}</td></tr></tfoot>
         </table></div>
         <div class="list only-mob">${lista.map((p) => `
-          <div style="padding:4px 0 14px;${"border-bottom:1px solid #f1f3f5"}">
-            <div class="row" style="padding-bottom:8px">
+          <div class="prest-mob">
+            <div class="row" style="padding:0">
               <button class="row" data-act="cuotas" data-id="${p.id}" style="padding:0;flex:1;min-width:0">
                 ${icoLucide("banknote", "var(--red-soft)", "var(--red)")}
                 <span class="row-body"><span class="row-title">${esc(p.entidad)}</span><span class="row-sub">${subMob(p)}</span></span>
-                <span class="row-amount ${p.saldo ? "debt" : "pos"}">${U.gs(p.saldo)}</span>
               </button>
-              <button class="icon-btn plain" data-act="editar-prestamo" data-id="${p.id}" aria-label="Modificar"><i data-lucide="pencil"></i></button>
+              <button class="icon-btn plain" data-act="editar-prestamo" data-id="${p.id}" aria-label="Modificar ${esc(p.entidad)}"><i data-lucide="pencil"></i></button>
             </div>
-            ${avance(p)}
+            <button class="pm-pie" data-act="cuotas" data-id="${p.id}">
+              ${avance(p)}<span class="row-amount ${p.saldo ? "debt" : "pos"}">${U.gs(p.saldo)}</span>
+            </button>
           </div>`).join("")}</div>`}`;
     },
 
@@ -363,6 +364,7 @@
       lista.forEach((a) => { const k = U.norm(a.entidad); const x = ent.get(k) || { nombre: a.entidad, saldo: 0 }; x.saldo += a.tipo === "deposito" ? a.monto : -a.monto; ent.set(k, x); });
       const entidades = [...ent.values()].filter((x) => x.saldo !== 0).sort((a, b) => b.saldo - a.saldo);
       const signo = (a) => a.tipo === "deposito" ? "+" : "-";
+      const icoAhorro = (a) => a.tipo === "deposito" ? icoLucide("arrow-up", "var(--green-soft)", "var(--green)") : icoLucide("arrow-down", "#eceff3", "#4b5563");
 
       app.innerHTML = `
         <div class="page-head">
@@ -384,14 +386,14 @@
         <div class="table-wrap only-desk"><table class="tabla">
           <thead><tr><th>Fecha</th><th>Descripción</th><th>Entidad</th><th>Tipo</th><th class="r">Monto</th></tr></thead>
           <tbody>${lista.map((a) => `<tr data-act="editar-ahorro" data-id="${a.id}">
-            <td>${U.fecha(a.fecha)}</td><td class="strong">${esc(a.descripcion)}</td><td>${esc(a.entidad)}</td>
+            <td>${U.fecha(a.fecha)}</td><td class="strong"><span class="cell-ico">${icoAhorro(a)}${esc(a.descripcion)}</span></td><td>${esc(a.entidad)}</td>
             <td>${a.tipo === "deposito" ? `<span class="pill">Depósito</span>` : `<span class="pill gray">Retiro</span>`}</td>
             <td class="r strong" style="color:${a.tipo === "deposito" ? "var(--green)" : "var(--ink)"}">${signo(a)}${U.num(a.monto)}</td></tr>`).join("")}</tbody>
           <tfoot><tr><td colspan="5">${U.plural(lista.length, "movimiento", "movimientos")}</td></tr></tfoot>
         </table></div>
         <div class="list only-mob">${lista.map((a) => `
           <button class="row" data-act="editar-ahorro" data-id="${a.id}">
-            ${a.tipo === "deposito" ? icoDot("#0B7A5A") : icoLucide("arrow-down-left", "#eceff3", "#4b5563")}
+            ${icoAhorro(a)}
             <span class="row-body"><span class="row-title">${esc(a.descripcion)}</span><span class="row-sub">${esc(a.entidad)} · ${U.fechaCorta(a.fecha)}</span></span>
             <span class="row-amount ${a.tipo === "deposito" ? "pos" : "neg"}">${signo(a)}${U.num(a.monto)}</span>
           </button>`).join("")}</div>`}`;
@@ -587,7 +589,7 @@
         <label class="field ${bloqueado ? "locked" : ""}"><span>Fecha de la primera cuota</span><input id="pFecha" type="date" value="${p ? p.fecha_inicio : U.hoy()}" ${lock}></label>
         <div class="lbl">Categoría de los pagos</div>
         <div class="chips" id="pCats"></div>
-        <div class="mini" style="font-weight:500">Al marcar una cuota como pagada se registra un gasto con esta categoría.</div>
+        <div class="mini txt" style="font-weight:500">Al marcar una cuota como pagada se registra un gasto con esta categoría.</div>
         <div class="err" id="pErr"></div>`,
       pie: `${id ? `<button class="btn btn-danger-outline btn-icon" id="pBorrar" aria-label="Borrar"><i data-lucide="trash-2"></i></button>` : ""}
         <button class="btn btn-outline" data-cerrar>Salir</button><button class="btn btn-primary" id="pGuardar">Guardar</button>`,
@@ -634,12 +636,14 @@
     if (c.vence < U.hoy()) return icoLucide("triangle-alert", "var(--red-soft)", "var(--red)");
     return icoLucide("calendar", "#eceff3", "#4b5563");
   }
+  /** "25 nov" este año, "25 ene 2027" otro año */
+  const fechaCuota = (s) => { const t = `${+s.slice(8, 10)} ${U.mesCorto(s.slice(0, 7)).toLowerCase()}`; return s.slice(0, 4) === U.hoy().slice(0, 4) ? t : `${t} ${s.slice(0, 4)}`; };
   function subCuota(c) {
-    if (c.pagada_el) return `<span class="row-sub">Pagada el ${U.fecha(c.pagada_el)}</span>`;
+    if (c.pagada_el) return `<span class="row-sub">Pagada el ${fechaCuota(c.pagada_el)}</span>`;
     const d = U.diasEntre(c.vence, U.hoy());
     if (d > 0) return `<span class="row-sub danger">Vencida · ${d === 1 ? "1 día" : `${d} días`} de mora</span>`;
     if (d === 0) return `<span class="row-sub danger">Vence hoy</span>`;
-    return `<span class="row-sub">Vence ${U.fecha(c.vence)}</span>`;
+    return `<span class="row-sub">Vence ${fechaCuota(c.vence)}</span>`;
   }
 
   async function modalCuotas(prestamoId) {
@@ -671,7 +675,7 @@
               <div class="row">
                 ${icoCuota(c)}
                 <span class="row-body"><span class="row-title">Cuota ${c.numero}</span>${subCuota(c)}</span>
-                <span class="row-amount ${c.vence < hoy ? "debt" : "neg"}">${U.gs(c.monto)}</span>
+                <span class="row-amount ${c.vence < hoy ? "debt" : "neg"}">${U.num(c.monto)}</span>
                 ${i ? `<button class="icon-btn plain" data-editar="${c.id}" aria-label="Modificar cuota ${c.numero}"><i data-lucide="pencil"></i></button>` : ""}
               </div>
               ${i === 0 ? `<div class="cuota-actions"><button class="btn btn-primary btn-sm" data-pagar="${c.id}"><i data-lucide="check"></i>Marcar como pagada</button><button class="btn btn-outline btn-sm" data-editar="${c.id}">Modificar</button></div>` : ""}
@@ -1021,7 +1025,7 @@
         <label class="field"><span>Contraseña actual</span><input id="ccActual" type="password" autocomplete="current-password"></label>
         <label class="field"><span>Contraseña nueva (mínimo 8 caracteres)</span><input id="ccNueva" type="password" autocomplete="new-password"></label>
         <label class="field"><span>Repetila</span><input id="ccRepite" type="password" autocomplete="new-password"></label>
-        <p class="mini" style="margin:0;font-weight:500">Se cierra la sesión en tus otros dispositivos.</p>
+        <p class="mini txt" style="margin:0;font-weight:500">Se cierra la sesión en tus otros dispositivos.</p>
         <div class="err" id="ccErr"></div>`,
       pie: `<button class="btn btn-outline" data-cerrar>Salir</button><button class="btn btn-primary" id="ccOk">Guardar</button>`,
     });
