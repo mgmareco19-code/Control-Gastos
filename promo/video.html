@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Video promocional · Control de gastos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; min-height: 100vh; background: #111614; color: #e9eeec; font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      display: flex; gap: 32px; padding: 28px; box-sizing: border-box; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
+    canvas { height: min(88vh, 960px); aspect-ratio: 9 / 16; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,.5); background: #000; max-width: 100%; }
+    .panel { max-width: 380px; }
+    h1 { margin: 0 0 8px; font-size: 26px; }
+    p { color: #a9b3af; line-height: 1.5; }
+    .btns { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0; }
+    button { font: inherit; font-weight: 700; border: 0; border-radius: 14px; height: 48px; padding: 0 20px; cursor: pointer; }
+    #play { background: #2b3632; color: #fff; }
+    #mp4 { background: #3ccf99; color: #04261b; }
+    button:disabled { opacity: .6; cursor: default; }
+    #estado { min-height: 24px; font-weight: 600; color: #3ccf99; }
+    .barra { height: 8px; background: #2b3632; border-radius: 9px; overflow: hidden; margin-top: 8px; }
+    .barra i { display: block; height: 100%; width: 0; background: #3ccf99; }
+    code { background: #2b3632; padding: 1px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <canvas id="lienzo" width="1080" height="1920"></canvas>
+  <div class="panel">
+    <h1>Video promocional</h1>
+    <p>Vertical 1080×1920 (estados de WhatsApp, Reels, TikTok, Shorts), unos 25 segundos, sin sonido: la música agregala al publicar desde Instagram o CapCut.</p>
+    <div class="btns">
+      <button id="play">▶ Reproducir</button>
+      <button id="mp4">Descargar MP4</button>
+    </div>
+    <div id="estado"></div>
+    <div class="barra"><i id="barra"></i></div>
+    <p>El nombre, el precio, los días de prueba y el WhatsApp salen de <code>js/config.js</code>: si los cambiás, volvé a abrir esta página y descargá el video de nuevo.</p>
+    <p>Usá Chrome o Edge en la computadora.</p>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="https://unpkg.com/mp4-muxer@5/build/mp4-muxer.js"></script>
+  <script src="video.js"></script>
+</body>
+</html>

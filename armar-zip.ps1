@@ -10,6 +10,9 @@ New-Item -ItemType Directory -Force (Join-Path $tmp "js") | Out-Null
 New-Item -ItemType Directory -Force (Join-Path $tmp "css") | Out-Null
 "index.html", "ventas.html", "terminos.html", "privacidad.html" | ForEach-Object { Copy-Item (Join-Path $src $_) $tmp }
 Copy-Item (Join-Path $src "css\*") (Join-Path $tmp "css")
+New-Item -ItemType Directory -Force (Join-Path $tmp "img") | Out-Null
+# solo los tamaños que usa la página (no la imagen original del logo)
+Get-ChildItem (Join-Path $src "img") -File | Where-Object { $_.Name -match '^(logo|icono)-\d+\.png$' } | ForEach-Object { Copy-Item $_.FullName (Join-Path $tmp "img") }
 Get-ChildItem (Join-Path $src "js") -Filter *.js | Where-Object { $_.Name -ne "superadmin.js" } | ForEach-Object { Copy-Item $_.FullName (Join-Path $tmp "js") }
 if (Test-Path $zip) { Remove-Item $zip }
 Compress-Archive -Path (Join-Path $tmp "*") -DestinationPath $zip

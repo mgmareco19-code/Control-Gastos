@@ -16,7 +16,7 @@
   const state = { mes: U.mesActual(), ruta: "inicio", sub: "", buscar: "", tabCuotas: "todas", cuenta: null };
   let renderId = 0;
 
-  const LOGO = `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5z"/><text x="12" y="16.5" font-size="12" font-weight="800" text-anchor="middle" fill="#fff">$</text></svg>`;
+  const LOGO = `<img class="auth-logo" src="img/logo-256.png" alt="">`;
   const wa = (msg) => `https://wa.me/${cfg.soporteWhatsapp}?text=${encodeURIComponent(msg)}`;
   const estado = () => U.estadoCuenta(state.cuenta, cfg.diasGracia);
   const primerNombre = () => ((state.cuenta && state.cuenta.nombre) || "").trim().split(/\s+/)[0];
@@ -138,23 +138,23 @@
     const bw = Math.min(26, ancho * 0.28);
     let s = "";
     for (let v = 0; v <= tope + 1; v += paso) {
-      s += `<line x1="${pl}" x2="${W - pr}" y1="${y(v)}" y2="${y(v)}" stroke="#eef0f3"/>`;
+      s += `<line x1="${pl}" x2="${W - pr}" y1="${y(v)}" y2="${y(v)}" style="stroke:var(--sep)"/>`;
       s += `<text x="${pl - 8}" y="${y(v) + 4}" text-anchor="end">${etiqueta(v)}</text>`;
     }
     const barra = (x, v, color, tit) => {
       const h = Math.max(0, H - pb - y(v));
       if (!h) return "";
       const r = Math.min(5, h / 2);
-      return `<path d="M${x},${H - pb} v${-(h - r)} q0,${-r} ${r},${-r} h${bw - 2 * r} q${r},0 ${r},${r} v${h - r} z" fill="${color}"><title>${tit}</title></path>`;
+      return `<path d="M${x},${H - pb} v${-(h - r)} q0,${-r} ${r},${-r} h${bw - 2 * r} q${r},0 ${r},${r} v${h - r} z" style="fill:${color}"><title>${tit}</title></path>`;
     };
     datos.forEach((d, i) => {
       const cx = pl + ancho * i + ancho / 2;
       const actual = d.mes === state.mes;
       s += `<g class="bar-hit" data-act="ir-mes" data-mes="${d.mes}" style="cursor:pointer">
-        <rect x="${pl + ancho * i}" y="${pt}" width="${ancho}" height="${H - pt}" fill="${actual ? "#f3f7f5" : "transparent"}" rx="10"/>
-        ${barra(cx - bw - 2, d.ingresos, "#0b7a5a", `Ingresos ${U.nombreMes(d.mes)}: ${U.gs(d.ingresos)}`)}
-        ${barra(cx + 2, d.gastos, "#111827", `Gastos ${U.nombreMes(d.mes)}: ${U.gs(d.gastos)}`)}
-        <text x="${cx}" y="${H - 8}" text-anchor="middle" style="${actual ? "font-weight:700;fill:#111827" : ""}">${U.mesCorto(d.mes)}</text>
+        <rect x="${pl + ancho * i}" y="${pt}" width="${ancho}" height="${H - pt}" style="fill:${actual ? "var(--chart-hl)" : "transparent"}" rx="10"/>
+        ${barra(cx - bw - 2, d.ingresos, "var(--green)", `Ingresos ${U.nombreMes(d.mes)}: ${U.gs(d.ingresos)}`)}
+        ${barra(cx + 2, d.gastos, "var(--barra-gasto)", `Gastos ${U.nombreMes(d.mes)}: ${U.gs(d.gastos)}`)}
+        <text x="${cx}" y="${H - 8}" text-anchor="middle" style="${actual ? "font-weight:700;fill:var(--ink)" : ""}">${U.mesCorto(d.mes)}</text>
       </g>`;
     });
     cont.innerHTML = `<svg class="chart" viewBox="0 0 ${W} ${H}" style="height:${H}px" role="img" aria-label="Ingresos y gastos de los últimos ${datos.length} meses">${s}</svg>`;
@@ -216,7 +216,7 @@
           </div>
         </div>
         <div class="section-head"><h2>Ingresos vs Gastos</h2>
-          <div class="chart-legend"><span><i style="background:#0b7a5a"></i>Ingresos</span><span><i style="background:#111827"></i>Gastos</span></div></div>
+          <div class="chart-legend"><span><i style="background:var(--green)"></i>Ingresos</span><span><i style="background:var(--barra-gasto)"></i>Gastos</span></div></div>
         <div class="card" style="padding:16px 14px 8px"><div id="grafico"></div></div>`;
       const g = $("#grafico");
       g._datos = resumen;
@@ -364,7 +364,7 @@
       lista.forEach((a) => { const k = U.norm(a.entidad); const x = ent.get(k) || { nombre: a.entidad, saldo: 0 }; x.saldo += a.tipo === "deposito" ? a.monto : -a.monto; ent.set(k, x); });
       const entidades = [...ent.values()].filter((x) => x.saldo !== 0).sort((a, b) => b.saldo - a.saldo);
       const signo = (a) => a.tipo === "deposito" ? "+" : "-";
-      const icoAhorro = (a) => a.tipo === "deposito" ? icoLucide("arrow-up", "var(--green-soft)", "var(--green)") : icoLucide("arrow-down", "#eceff3", "#4b5563");
+      const icoAhorro = (a) => a.tipo === "deposito" ? icoLucide("arrow-up", "var(--green-soft)", "var(--green)") : icoLucide("arrow-down", "var(--gris-soft)", "var(--ink3)");
 
       app.innerHTML = `
         <div class="page-head">
@@ -634,7 +634,7 @@
   function icoCuota(c) {
     if (c.pagada_el) return icoLucide("check", "var(--green-soft)", "var(--green)");
     if (c.vence < U.hoy()) return icoLucide("triangle-alert", "var(--red-soft)", "var(--red)");
-    return icoLucide("calendar", "#eceff3", "#4b5563");
+    return icoLucide("calendar", "var(--gris-soft)", "var(--ink3)");
   }
   /** "25 nov" este año, "25 ene 2027" otro año */
   const fechaCuota = (s) => { const t = `${+s.slice(8, 10)} ${U.mesCorto(s.slice(0, 7)).toLowerCase()}`; return s.slice(0, 4) === U.hoy().slice(0, 4) ? t : `${t} ${s.slice(0, 4)}`; };
@@ -671,7 +671,7 @@
         <div class="section-head" style="margin-top:0"><h2>${p.cancelado ? "Préstamo cancelado" : "Próximas cuotas"}</h2></div>
         ${p.cancelado ? `<div class="empty"><div class="empty-ico"><i data-lucide="party-popper"></i></div><h3>¡Pagaste todas las cuotas!</h3><p>${U.plural(p.cuotas, "cuota", "cuotas")} · ${U.gs(p.total)} en total.</p></div>`
           : `<div class="list">${prox.map((c, i) => `
-            <div ${i ? 'style="border-top:1px solid #f1f3f5"' : ""}>
+            <div ${i ? 'style="border-top:1px solid var(--sep)"' : ""}>
               <div class="row">
                 ${icoCuota(c)}
                 <span class="row-body"><span class="row-title">Cuota ${c.numero}</span>${subCuota(c)}</span>
@@ -839,7 +839,7 @@
           <button type="button" data-demo="magnom@demo.com">magnom@demo.com</button> · al día<br>
           <button type="button" data-demo="ana@demo.com">ana@demo.com</button> · vence en 3 días<br>
           <button type="button" data-demo="carlos@demo.com">carlos@demo.com</button> · vencida (solo lectura)<br>
-          Superadmin: <a href="superadmin.html" style="color:#8a5a00;font-weight:600">superadmin.html</a> (contraseña <code>${esc(cfg.demoPasswordSuper)}</code>)</div>` : ""}
+          Superadmin: <a href="superadmin.html" style="color:inherit;font-weight:700">superadmin.html</a> (contraseña <code>${esc(cfg.demoPasswordSuper)}</code>)</div>` : ""}
       </form>`;
     icons();
     const f = $("#fLogin");
@@ -914,7 +914,7 @@
             ${icoLucide("file-text", "var(--green-soft)", "var(--green)")}
             <span class="row-body"><span class="row-title">Términos y condiciones</span><span class="row-sub">Abono, uso del servicio y responsabilidades</span></span>
             <i data-lucide="external-link" class="row-chev"></i></a>
-          <a class="row" href="privacidad.html" target="_blank" rel="noopener" style="text-decoration:none;padding:4px 0;border-top:1px solid #f1f3f5">
+          <a class="row" href="privacidad.html" target="_blank" rel="noopener" style="text-decoration:none;padding:4px 0;border-top:1px solid var(--sep)">
             ${icoLucide("shield-check", "var(--green-soft)", "var(--green)")}
             <span class="row-body"><span class="row-title">Política de privacidad</span><span class="row-sub">Qué datos guardamos y quién puede verlos</span></span>
             <i data-lucide="external-link" class="row-chev"></i></a>
@@ -999,8 +999,15 @@
     const e = estado();
     const pill = { activa: "", por_vencer: "gray", gracia: "red", vencida: "red", suspendida: "red" }[e.estado];
     const m = modal({
-      titulo: "Mi cuenta", clase: "small",
+      titulo: "Mi cuenta y configuración", clase: "small",
       cuerpo: `
+        <div class="lbl">Apariencia</div>
+        <div class="seg tema-sel" id="mcTema" role="radiogroup" aria-label="Apariencia">
+          ${[["claro", "sun", "Claro"], ["oscuro", "moon", "Oscuro"], ["auto", "monitor", "Automático"]].map(([k, ic, t]) =>
+            `<button type="button" role="radio" data-tema="${k}" aria-checked="${Tema.preferencia() === k}" class="${Tema.preferencia() === k ? "on" : ""}"><i data-lucide="${ic}"></i>${t}</button>`).join("")}
+        </div>
+        <p class="mini txt" style="margin:-4px 0 0;font-weight:500">Automático usa el mismo modo que tu celular o computadora. Se guarda en este dispositivo.</p>
+        <div class="lbl">Mi cuenta</div>
         <div class="card" style="padding:6px 18px">
           <div class="kv"><span class="k">Nombre</span><span class="v">${esc(c.nombre)}</span></div>
           <div class="kv"><span class="k">Email</span><span class="v">${esc(c.email)}</span></div>
@@ -1010,12 +1017,123 @@
         </div>
         <div class="stack">
           <a class="btn btn-primary btn-block" href="${wa(`Hola, quiero renovar mi abono de ${cfg.nombreApp} (${c.email}).`)}" target="_blank" rel="noopener"><i data-lucide="message-circle"></i>Renovar o consultar por WhatsApp</a>
+          <button class="btn btn-outline btn-block" id="mcExcel"><i data-lucide="file-spreadsheet"></i>Descargar mis datos (Excel)</button>
           <button class="btn btn-outline btn-block" id="mcClave"><i data-lucide="key-round"></i>Cambiar contraseña</button>
           <button class="btn btn-danger-outline btn-block" id="mcSalir"><i data-lucide="log-out"></i>Cerrar sesión</button>
         </div>`,
     });
+    $("#mcTema", m.el).addEventListener("click", (ev) => {
+      const b = ev.target.closest("[data-tema]"); if (!b) return;
+      Tema.elegir(b.dataset.tema);
+      $$("#mcTema [data-tema]", m.el).forEach((x) => { x.classList.toggle("on", x === b); x.setAttribute("aria-checked", x === b); });
+    });
     $("#mcClave", m.el).addEventListener("click", () => { m.cerrar(); modalCambiarClave(); });
     $("#mcSalir", m.el).addEventListener("click", () => { m.cerrar(); salir(); });
+    $("#mcExcel", m.el).addEventListener("click", async (ev) => {
+      const b = ev.currentTarget, txt = b.innerHTML;
+      b.disabled = true; b.innerHTML = `<i data-lucide="loader"></i>Preparando…`; icons();
+      const r = await intentar(() => exportarExcel(c));
+      b.disabled = false; b.innerHTML = txt; icons();
+      if (r) toast(`Listo: se descargó ${r}`);
+    });
+  }
+
+  /* ============================================================
+     Exportar todos los datos del cliente a Excel (también en solo lectura)
+     ============================================================ */
+  async function exportarExcel(c) {
+    const [cats, movs, prests, ahorros] = await Promise.all([DB.categorias(), DB.movimientos({}), DB.prestamos(), DB.ahorros()]);
+    const cuotas = (await Promise.all(prests.map((p) => DB.cuotas(p.id)))).flat();
+    const catDe = new Map(cats.map((x) => [x.id, x]));
+    const prestDe = new Map(prests.map((p) => [p.id, p]));
+    const hoy = U.hoy();
+    const H = (...t) => t.map((v) => ({ v, s: "head" }));
+    const F = (v) => ({ v, s: "fecha" });
+    const M = (v) => (v || v === 0 ? { v, s: "monto" } : null);
+    const B = (v) => ({ v, s: "bold" });
+    const MB = (v) => ({ v, s: "montoBold" });
+    const porFecha = (a, b) => a.fecha.localeCompare(b.fecha) || a.id - b.id;
+
+    // Movimientos (del más viejo al más nuevo)
+    const ms = [...movs].sort(porFecha);
+    const ing = ms.filter((m) => m.tipo === "ingreso").reduce((s, m) => s + m.monto, 0);
+    const gas = ms.filter((m) => m.tipo === "gasto").reduce((s, m) => s + m.monto, 0);
+
+    // Resumen por mes
+    const meses = new Map();
+    ms.forEach((m) => { const k = U.mesDe(m.fecha); const x = meses.get(k) || { i: 0, g: 0 }; x[m.tipo === "ingreso" ? "i" : "g"] += m.monto; meses.set(k, x); });
+    const mesesOrd = [...meses.keys()].sort().reverse();
+
+    // Ahorros
+    const as = [...ahorros].sort(porFecha);
+    const dep = as.filter((a) => a.tipo === "deposito").reduce((s, a) => s + a.monto, 0);
+    const ret = as.filter((a) => a.tipo === "retiro").reduce((s, a) => s + a.monto, 0);
+    const deuda = prests.reduce((s, p) => s + p.saldo, 0);
+
+    const resumen = [
+      [{ v: `${cfg.nombreApp} · mis datos`, s: "titulo" }],
+      [],
+      ["Nombre", c.nombre],
+      ["Email", c.email],
+      ["Exportado el", F(hoy)],
+      [],
+      [B("Totales de todo el historial")],
+      ["Ingresos", M(ing)],
+      ["Gastos", M(gas)],
+      [B("Saldo"), MB(ing - gas)],
+      ["Deuda pendiente en préstamos", M(deuda)],
+      ["Total ahorrado", M(dep - ret)],
+      [],
+      H("Mes", "Ingresos", "Gastos", "Saldo"),
+      ...mesesOrd.map((k) => { const x = meses.get(k); return [U.nombreMes(k), M(x.i), M(x.g), M(x.i - x.g)]; }),
+    ];
+
+    const hojaMov = [
+      H("Fecha", "Tipo", "Categoría", "Descripción", "Ingreso", "Gasto", "Cuota de préstamo"),
+      ...ms.map((m) => {
+        const cu = m.cuota_id ? cuotas.find((x) => x.id === m.cuota_id) : null;
+        const p = cu ? prestDe.get(cu.prestamo_id) : null;
+        return [F(m.fecha), m.tipo === "ingreso" ? "Ingreso" : "Gasto", (m.categoria || catDe.get(m.categoria_id) || {}).nombre || "",
+          m.descripcion, m.tipo === "ingreso" ? M(m.monto) : null, m.tipo === "gasto" ? M(m.monto) : null, p ? `${p.entidad} · cuota ${cu.numero}` : ""];
+      }),
+      [B("Total"), null, null, null, MB(ing), MB(gas)],
+    ];
+
+    const hojaPrest = [
+      H("Entidad", "Categoría", "Primera cuota", "Cuotas", "Monto cuota", "Total", "Pagado", "Saldo", "Cuotas pagadas", "Estado"),
+      ...prests.map((p) => [p.entidad, (catDe.get(p.categoria_id) || {}).nombre || "", F(p.fecha_inicio), p.cuotas, M(p.monto_cuota),
+        M(p.total), M(p.pagado), M(p.saldo), `${p.pagadas} de ${p.cuotas}`, p.cancelado ? "Cancelado" : p.vencidas ? "Atrasado" : "Activo"]),
+    ];
+
+    const hojaCuotas = [
+      H("Préstamo", "N.º", "Vence", "Monto", "Estado", "Pagada el"),
+      ...[...cuotas].sort((a, b) => (prestDe.get(a.prestamo_id)?.entidad || "").localeCompare(prestDe.get(b.prestamo_id)?.entidad || "") || a.numero - b.numero)
+        .map((x) => [(prestDe.get(x.prestamo_id) || {}).entidad || "", x.numero, F(x.vence), M(x.monto),
+          x.pagada_el ? "Pagada" : x.vence < hoy ? "Vencida" : "Pendiente", x.pagada_el ? F(x.pagada_el) : null]),
+    ];
+
+    const hojaAhorros = [
+      H("Fecha", "Entidad", "Descripción", "Tipo", "Depósito", "Retiro"),
+      ...as.map((a) => [F(a.fecha), a.entidad, a.descripcion, a.tipo === "deposito" ? "Depósito" : "Retiro",
+        a.tipo === "deposito" ? M(a.monto) : null, a.tipo === "retiro" ? M(a.monto) : null]),
+      [B("Total"), null, null, null, MB(dep), MB(ret)],
+    ];
+
+    const hojaCats = [
+      H("Categoría", "Tipo", "Usos"),
+      ...[...cats].sort((a, b) => a.tipo.localeCompare(b.tipo) || a.nombre.localeCompare(b.nombre)).map((x) => [x.nombre, x.tipo === "ingreso" ? "Ingreso" : "Gasto", x.usos || 0]),
+    ];
+
+    const nombre = `${U.norm(cfg.nombreApp).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "datos"}-${hoy}.xlsx`;
+    Excel.descargar(nombre, [
+      { nombre: "Resumen", anchos: [32, 18, 16, 16], filas: resumen },
+      { nombre: "Movimientos", anchos: [12, 10, 18, 36, 14, 14, 28], filas: hojaMov, filtro: true, pie: 1 },
+      { nombre: "Préstamos", anchos: [26, 16, 14, 9, 14, 14, 14, 14, 15, 12], filas: hojaPrest, filtro: true },
+      { nombre: "Cuotas", anchos: [26, 7, 12, 14, 12, 12], filas: hojaCuotas, filtro: true },
+      { nombre: "Ahorros", anchos: [12, 26, 30, 11, 14, 14], filas: hojaAhorros, filtro: true, pie: 1 },
+      { nombre: "Categorías", anchos: [24, 10, 8], filas: hojaCats, filtro: true },
+    ]);
+    return nombre;
   }
 
   function modalCambiarClave() {
@@ -1126,6 +1244,7 @@
   $("#scrim").addEventListener("click", () => document.body.classList.remove("menu-abierto"));
   $("#fab").addEventListener("click", () => { if (FAB[state.ruta] && puedeEscribir()) FAB[state.ruta](); });
   $("#btnCuenta").addEventListener("click", modalMiCuenta);
+  $("#navConfig").addEventListener("click", () => { document.body.classList.remove("menu-abierto"); modalMiCuenta(); });
 
   let rz;
   window.addEventListener("resize", () => {

@@ -104,7 +104,7 @@
           <div class="kv"><span class="k">Email</span><span class="v">${esc(c.email)}</span></div>
           <div class="kv"><span class="k">Contraseña temporal</span><span class="v" style="font-family:monospace;font-size:18px;letter-spacing:1px">${esc(clave)}</span></div>
         </div>
-        <textarea readonly style="width:100%;min-height:150px;border:0;border-radius:14px;padding:12px;font:inherit;font-size:14px;background:#fff;resize:vertical">${esc(msg)}</textarea>`,
+        <textarea readonly style="width:100%;min-height:150px;border:0;border-radius:14px;padding:12px;font:inherit;font-size:14px;background:var(--card);color:var(--ink);resize:vertical">${esc(msg)}</textarea>`,
       pie: `<button class="btn btn-outline" id="acCopiar"><i data-lucide="copy"></i>Copiar</button>
         ${c.whatsapp ? `<a class="btn btn-primary" href="${waA(c.whatsapp, msg)}" target="_blank" rel="noopener"><i data-lucide="message-circle"></i>Enviar por WhatsApp</a>` : `<button class="btn btn-primary" data-cerrar>Listo</button>`}`,
     });
@@ -117,7 +117,7 @@
     $$(".modal-back").forEach((m) => m.remove());
     $("#auth").innerHTML = `
       <form class="auth-card" id="fLogin" novalidate>
-        <div class="auth-brand" style="color:var(--ink)"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5z"/></svg><span>Superadmin</span></div>
+        <div class="auth-brand"><img class="auth-logo" src="img/logo-256.png" alt=""><span>Superadmin</span></div>
         <h1>${esc(cfg.nombreApp)}</h1>
         ${msg ? `<div class="aviso warn" style="margin:0"><span>${esc(msg)}</span></div>` : ""}
         <label class="field"><span>Email</span><input id="sEmail" type="email" autocomplete="username"></label>
@@ -277,7 +277,7 @@
           <span class="row-amount pos">${U.num(p.monto)}</span>
           <button class="icon-btn plain" data-borrar="${p.id}" aria-label="Borrar pago"><i data-lucide="trash-2"></i></button>
         </div>`).join("")}
-        <div class="mini" style="padding:12px 0;text-align:right;border-top:1px solid #f1f3f5">${U.plural(ps.length, "cobro", "cobros")} · ${U.gs(ps.reduce((s, p) => s + p.monto, 0))}</div>
+        <div class="mini" style="padding:12px 0;text-align:right;border-top:1px solid var(--sep)">${U.plural(ps.length, "cobro", "cobros")} · ${U.gs(ps.reduce((s, p) => s + p.monto, 0))}</div>
       </div>
       <div class="table-wrap only-desk" style="margin-top:0"><table class="tabla">
         <thead><tr><th>Fecha</th><th>Cliente</th><th class="r">Meses</th><th>Período</th><th class="r">Monto</th><th></th></tr></thead>
@@ -420,6 +420,22 @@
 
   /* ---------------- Arranque ---------------- */
   $("#brandName").textContent = cfg.nombreApp;
+  $("#btnTema").addEventListener("click", () => {
+    const op = [["claro", "sun", "Claro"], ["oscuro", "moon", "Oscuro"], ["auto", "monitor", "Automático"]];
+    const m = modal({
+      titulo: "Apariencia", clase: "small",
+      cuerpo: `
+        <div class="seg tema-sel" id="sTema" role="radiogroup" aria-label="Apariencia">${op.map(([k, ic, t]) =>
+          `<button type="button" role="radio" data-tema="${k}" aria-checked="${Tema.preferencia() === k}" class="${Tema.preferencia() === k ? "on" : ""}"><i data-lucide="${ic}"></i>${t}</button>`).join("")}</div>
+        <p class="mini txt" style="margin:0;font-weight:500">Automático usa el mismo modo que tu computadora. Se guarda en este navegador (es el mismo ajuste que la app de clientes en este navegador).</p>`,
+      pie: `<button class="btn btn-primary btn-block" data-cerrar style="flex:1">Listo</button>`,
+    });
+    $("#sTema", m.el).addEventListener("click", (ev) => {
+      const b = ev.target.closest("[data-tema]"); if (!b) return;
+      Tema.elegir(b.dataset.tema);
+      $$("#sTema [data-tema]", m.el).forEach((x) => { x.classList.toggle("on", x === b); x.setAttribute("aria-checked", x === b); });
+    });
+  });
   $("#btnSalir").addEventListener("click", async () => { await DB.superLogout().catch(() => {}); mostrarLogin(); });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") { const ms = $$(".modal-back"); if (ms.length) ms[ms.length - 1].querySelector("[data-cerrar]").click(); }

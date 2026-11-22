@@ -70,7 +70,7 @@ Errores inesperados de la API: tabla `cg_errores`.
 | **Categorías** | De gastos y de ingresos, con color. Una categoría en uso no se puede borrar |
 | **Préstamos** | Deuda pendiente, cuota del mes, avance y atrasos. Activos y cancelados |
 | **Ahorros** | Depósitos y retiros por entidad (banco, cooperativa, alcancía…), total ahorrado y dónde está |
-| **Mi cuenta** (avatar) | Estado del abono, renovar por WhatsApp, cambiar contraseña, cerrar sesión |
+| **Mi cuenta y configuración** (avatar o *Configuración* en el menú) | **Modo claro, oscuro o automático**, estado del abono, renovar por WhatsApp, **descargar mis datos en Excel**, cambiar contraseña, cerrar sesión |
 
 Al cargar un movimiento aparecen los **frecuentes** (lo que más repetís) para anotarlos con un toque.
 
@@ -87,22 +87,38 @@ Al cargar un movimiento aparecen los **frecuentes** (lo que más repetís) para 
 
 Van aparte: no restan del saldo del mes. Un retiro no puede ser mayor a lo que hay en esa entidad.
 
+## Descargar mis datos (Excel)
+
+En *Mi cuenta* → **Descargar mis datos (Excel)**. Baja un `.xlsx` con 6 hojas: Resumen (totales y saldo por mes), Movimientos, Préstamos, Cuotas, Ahorros y Categorías. Funciona también con la cuenta vencida o suspendida, así el cliente siempre puede llevarse sus datos (es lo que prometen los Términos). Se arma en el navegador con las consultas que ya existen: no hace falta nada nuevo en la base.
+
+
+
 ## Archivos
 
 ```
 index.html          la app del cliente (rutas #/inicio, #/movimientos, …)
 superadmin.html     tu panel
 css/styles.css      estilos
+img/                logo: imagen original (no se publica), logo-512/256/96.png sin texto y fondo transparente, icono-180/512.png con fondo para el iPhone
 js/config.js        WhatsApp de soporte, apiUrl, precio, días de gracia y de prueba
 js/utils.js         formato de guaraníes, fechas y estado del abono
 js/db.js            datos en modo demo (localStorage)
 js/db-oracle.js     datos en modo online (mismas funciones que db.js)
 js/app.js           pantallas del cliente
+js/excel.js         arma y descarga el Excel (.xlsx) sin librerías
+js/tema.js          modo claro / oscuro / automático (se guarda en el dispositivo)
 js/superadmin.js    pantallas del superadmin
 oracle/             scripts de la base (01 a 05)
 armar-zip.ps1       arma el zip para publicar
 maquetas/           maqueta de referencia (PDF)
+promo/              video promocional (no se publica en el bucket)
 ```
+
+## Video promocional
+
+- `promo/promo-control-de-gastos.mp4`: vertical 1080×1920, 25 segundos, sin sonido (para estados de WhatsApp, Reels, TikTok y Shorts). `promo/promo-portada.png`: el cuadro final como imagen.
+- Para rehacerlo (por ejemplo si cambiás el precio o los días de prueba en `js/config.js`): abrí `promo/video.html` en Chrome o Edge con Live Server → **Descargar MP4**. Los textos de cada escena están en `promo/video.js` (sección *Escenas*).
+- La música agregala al publicar (Instagram, TikTok o CapCut tienen música con licencia).
 
 ## Términos y privacidad
 
@@ -113,4 +129,3 @@ maquetas/           maqueta de referencia (PDF)
 
 - **Mi atajo** (pantalla 3 de la maqueta): anotar un gasto desde el atajo del celular con un token personal.
 - Recuperar contraseña por correo (hoy se resetea desde el superadmin).
-- Exportar los datos del cliente a Excel (los términos prometen entregar una copia si la pide).
